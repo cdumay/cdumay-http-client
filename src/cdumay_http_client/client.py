@@ -33,6 +33,10 @@ class HttpClient(object):
         return requests.request(**kwargs)
 
     # noinspection PyMethodMayBeStatic
+    def _format_data(self, data):
+        return data
+
+    # noinspection PyMethodMayBeStatic
     def _parse_response(self, response):
         return response.text
 
@@ -47,9 +51,10 @@ class HttpClient(object):
         logger.debug("[{}] - {}".format(method, req_url))
         try:
             response = self._request_wrapper(
-                method=method, url=req_url, params=params, data=data,
-                auth=self.auth, headers=headers, stream=stream,
-                timeout=timeout or self.timeout, verify=self.ssl_verify
+                method=method, url=req_url, params=params,
+                data=self._format_data(data), auth=self.auth, headers=headers,
+                stream=stream, timeout=timeout or self.timeout,
+                verify=self.ssl_verify
             )
         except requests.exceptions.RequestException as e:
             raise errors.InternalServerError(
