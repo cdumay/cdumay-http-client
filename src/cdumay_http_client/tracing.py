@@ -12,7 +12,7 @@ from cdumay_opentracing import Span
 from cdumay_http_client.client import HttpClient
 
 
-class RESTClientRequestSpan(Span):
+class RequestSpan(Span):
     FORMAT = opentracing.Format.HTTP_HEADERS
     TAGS = ['url', 'method']
 
@@ -69,7 +69,7 @@ class RESTClientRequestSpan(Span):
 class OpentracingHttpClient(HttpClient):
     def _request_wrapper(self, **kwargs):
         with opentracing.tracer.start_span(
-                obj=kwargs, span_factory=RESTClientRequestSpan) as span:
-            RESTClientRequestSpan.inject(span, kwargs)
+                obj=kwargs, span_factory=RequestSpan) as span:
+            RequestSpan.inject(span, kwargs)
             span.obj = requests.request(**kwargs)
             return span.obj
