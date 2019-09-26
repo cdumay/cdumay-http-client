@@ -22,7 +22,7 @@ class HttpClient(object):
             password=None, ssl_verify=True):
         self.server = server
         self.timeout = timeout
-        self.headers = headers or headers
+        self.headers = headers or dict()
         self.auth = (username, password) if username and password else None
         self.ssl_verify = ssl_verify
 
