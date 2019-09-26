@@ -1,0 +1,13 @@
+language: python
+python:
+- 3.5
+script:
+- python setup.py test
+deploy:
+  provider: pypi
+  user: cdumay
+  password:
+    secure: l9B+zgYqTzURzRIZqRX/JGy4SX3tibUxxXa0LuVEAR7/aRatfu+DSUo9MLMXyh/g2NSu5oOz7i3kwSYLooZI77/yA9SfHLq+df2HFbumbgTsMhoxQkfGAuN3uYeqwEdt+NkSx2DQoMWcAz0rM+Ah82aoHepXAYsTtyZCS6TZJNlWHTWJrdFOVLYwpvzLKuQ1Ysrypdij83y0chiQXRHvihAzCRAdPmvr/ggBDep7hzYXBCYtWnJCc2C2WtQu5HE9mHGcKr9UttqQaMvlTEutZhJCQ7veL6lJHqOElsumkAy5+PvZUOQ3TAox69lRBmey7W2RWCgJWEnIwlaVUXuRyJj+N8AMxvcCM3fjbfBmLXpc13Jmix81rtRj4AYJbXOsq5ecdTqw3T9z8x6uGE2JiKmwFudkil5HoNInY6XRynQzVNWzN/Xth1EMX0sSvigbBwqHdm6zVUR3blpDXlVUIr2FzeirPdQTA6+VjaHzrbQDoWN76Nr7vTsZzQNspYK+u5Uck59P4MoYD3b9p3wAk686seEkOokjMVclWpDvKt+P9Oy/BhJivsHAKNtUvhmP+7xnAyukkuc9nTzSiaibyyzSaSwDtniqnK8JQqFT3wftxbj1QFdkyBlUkAS7YK97mWe9mBhjO83Ur6SfWnpJKTz9V10uJaTV2bCocmY6DmI=
+  on:
+    tags: true
+    repo: cdumay/cdumay-http-client
