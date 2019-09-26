@@ -12,7 +12,7 @@
    :target: http://cdumay-http-client.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+.. image:: https://img.shields.io/badge/license-BSD3-blue.svg
     :target: https://github.com/cdumay/cdumay-http-client/blob/master/LICENSE
 
 cdumay-http-client
