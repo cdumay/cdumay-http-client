@@ -18,4 +18,57 @@
 cdumay-http-client
 ==================
 
-This library is a basic HTTP client with exception formatting.
+This library is a basic HTTP client for NON-REST api with exception formatting.
+
+
+Quickstart
+----------
+
+First, install cdumay-rest-client using
+`pip <https://pip.pypa.io/en/stable/>`_:
+
+    $ pip install cdumay-http-client
+
+Next, add a `HttpClient` instance to your code:
+
+.. code-block:: python
+
+    from cdumay_http_client.client import HttpClient
+
+    client = HttpClient(server="http://warp.myhost.com/api/v0")
+    print(client.do_request(method="POST", path="/exec", data=[...]))
+
+Exception
+---------
+
+You can use `marshmallow <https://marshmallow.readthedocs.io/en/latest>`_
+to serialize exceptions:
+
+.. code-block:: python
+
+    import json, sys
+    from cdumay_http_client.client import HttpClient
+    from cdumay_http_client.exceptions import HTTPException, HTTPExceptionValidator
+
+    try:
+        client = HttpClient(server="http://warp.myhost.com/api/v0")
+        data = client.do_request(method="GET", path="/me")
+    except HTTPException as exc:
+        data = HTTPExceptionValidator().dump(exc).data
+
+    json.dump(data, sys.stdout, sort_keys=True, indent=4, separators=(',', ': '))
+
+Result:
+
+.. code-block:: python
+
+    {
+        "code": 404,
+        "extra": {},
+        "message": "Not Found"
+    }
+
+License
+-------
+
+Licensed under `BSD 3-Clause License <./LICENSE>`_ or https://opensource.org/licenses/BSD-3-Clause.
