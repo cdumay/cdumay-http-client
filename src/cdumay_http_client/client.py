@@ -52,9 +52,9 @@ class HttpClient(object):
         try:
             response = self._request_wrapper(
                 method=method, url=req_url, params=params,
-                data=self._format_data(data), auth=self.auth, headers=headers,
-                stream=stream, timeout=timeout or self.timeout,
-                verify=self.ssl_verify
+                data=self._format_data(data), auth=self.auth,
+                headers=req_headers, stream=stream,
+                timeout=timeout or self.timeout, verify=self.ssl_verify
             )
         except requests.exceptions.RequestException as e:
             raise errors.InternalServerError(
