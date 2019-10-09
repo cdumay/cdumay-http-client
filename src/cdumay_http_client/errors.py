@@ -358,7 +358,9 @@ def from_response(response, url):
     :return: An error
     :rtype: cdumay_rest_client.errors.Error
     """
-    extra = dict(url=url, response=response.text, headers=response.headers)
+    extra = dict(
+        url=url, response=response.text, headers=dict(response.headers)
+    )
     # noinspection PyBroadException
     try:
         data = response.json()
