@@ -41,7 +41,7 @@ class HttpClient(object):
         return response.text
 
     def do_request(self, method, path, params=None, data=None, headers=None,
-                   timeout=None, parse_output=True, stream=False):
+                   timeout=None, parse_output=True, stream=False, **kwargs):
         req_url = ''.join([self.server.rstrip('/'), path])
         req_headers = headers or dict()
         req_headers.update(self.headers)
@@ -54,7 +54,8 @@ class HttpClient(object):
                 method=method, url=req_url, params=params,
                 data=self._format_data(data), auth=self.auth,
                 headers=req_headers, stream=stream,
-                timeout=timeout or self.timeout, verify=self.ssl_verify
+                timeout=timeout or self.timeout, verify=self.ssl_verify,
+                **kwargs
             )
         except requests.exceptions.RequestException as e:
             raise errors.InternalServerError(

@@ -358,14 +358,13 @@ def from_response(response, url):
     :return: An error
     :rtype: cdumay_rest_client.errors.Error
     """
+    extra = dict(url=url, response=response.text, headers=response.headers)
     # noinspection PyBroadException
     try:
         data = response.json()
+        data['extra'] = extra
         if not isinstance(data, dict):
-            return from_status(
-                response.status_code, response.text,
-                extra=dict(url=url, response=response.text)
-            )
+            return from_status(response.status_code, response.text, extra=extra)
 
         code = data.get('code', response.status_code)
         if code in HTTP_STATUS_CODES:
@@ -373,7 +372,4 @@ def from_response(response, url):
         else:
             return Error(**ErrorSchema().load(data))
     except Exception:
-        return from_status(
-            response.status_code, response.text,
-            extra=dict(url=url, response=response.text)
-        )
+        return from_status(response.status_code, response.text, extra=extra)
