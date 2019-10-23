@@ -339,7 +339,7 @@ def from_status(status, message=None, extra=None):
     :param str message: Body content
     :param dict extra: Additional info
     :return: An error
-    :rtype: cdumay_rest_client.errors.Error
+    :rtype: cdumay_http_client.errors.Error
     """
     if status in HTTP_STATUS_CODES:
         return HTTP_STATUS_CODES[status](message=message, extra=extra)
@@ -356,7 +356,7 @@ def from_response(response, url):
     :param request.Response response: HTTP response
     :param str url: URL attained
     :return: An error
-    :rtype: cdumay_rest_client.errors.Error
+    :rtype: cdumay_http_client.errors.Error
     """
     extra = dict(
         url=url, response=response.text, headers=dict(response.headers)
