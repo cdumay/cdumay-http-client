@@ -7,273 +7,318 @@
 
 """
 from cdumay_error import Error, NotImplemented, ValidationError, NotFound, \
-    ErrorSchema
+    ErrorSchema, Registry
 
 
+@Registry.register
 class MultipleChoices(Error):
     """Multiple choices"""
     MSGID = "HTTP-15978"
     CODE = 300
 
 
+@Registry.register
 class MovedPermanently(Error):
     """Moved Permanently"""
     MSGID = "HTTP-30785"
     CODE = 301
 
 
+@Registry.register
 class Found(Error):
     """Found"""
     MSGID = "HTTP-06627"
     CODE = 302
 
 
+@Registry.register
 class SeeOther(Error):
     """See Other"""
     MSGID = "HTTP-05027"
     CODE = 303
 
 
+@Registry.register
 class NotModified(Error):
     """Not Modified"""
     MSGID = "HTTP-22313"
     CODE = 304
 
 
+@Registry.register
 class UseProxy(Error):
     """Use Proxy"""
     MSGID = "HTTP-08625"
     CODE = 305
 
 
+@Registry.register
 class SwitchProxy(Error):
     """Switch Proxy"""
     MSGID = "HTTP-27946"
     CODE = 306
 
 
+@Registry.register
 class TemporaryRedirect(Error):
     """Temporary Redirect """
     MSGID = "HTTP-03565"
     CODE = 307
 
 
+@Registry.register
 class PermanentRedirect(Error):
     """Permanent Redirect"""
     MSGID = "HTTP-16866"
     CODE = 308
 
 
+@Registry.register
 class Unauthorized(Error):
     """Unauthorized"""
     MSGID = "HTTP-28015"
     CODE = 401
 
 
+@Registry.register
 class PaymentRequired(Error):
     """Payment Required"""
     MSGID = "HTTP-23516"
     CODE = 402
 
 
+@Registry.register
 class Forbidden(Error):
     """Forbidden"""
     MSGID = "HTTP-29860"
     CODE = 403
 
 
+@Registry.register
 class MethodNotAllowed(Error):
     """Method Not Allowed"""
     MSGID = "HTTP-00324"
     CODE = 405
 
 
+@Registry.register
 class NotAcceptable(Error):
     """Not Acceptable"""
     MSGID = "HTTP-30133"
     CODE = 406
 
 
+@Registry.register
 class ProxyAuthenticationRequired(Error):
     """Proxy Authentication Required"""
     MSGID = "HTTP-32405"
     CODE = 407
 
 
+@Registry.register
 class RequestTimeout(Error):
     """Request Time-out"""
     MSGID = "HTTP-13821"
     CODE = 408
 
 
+@Registry.register
 class Conflict(Error):
     """Conflict"""
     MSGID = "HTTP-21124"
     CODE = 409
 
 
+@Registry.register
 class Gone(Error):
     """Gone"""
     MSGID = "HTTP-15611"
     CODE = 410
 
 
+@Registry.register
 class LengthRequired(Error):
     """Length Required"""
     MSGID = "HTTP-08449"
     CODE = 411
 
 
+@Registry.register
 class PreconditionFailed(Error):
     """Precondition Failed"""
     MSGID = "HTTP-02225"
     CODE = 412
 
 
+@Registry.register
 class PayloadTooLarge(Error):
     """Payload Too Large"""
     MSGID = "HTTP-06608"
     CODE = 413
 
 
+@Registry.register
 class URITooLong(Error):
     """URI Too Long"""
     MSGID = "HTTP-04901"
     CODE = 414
 
 
+@Registry.register
 class UnsupportedMediaType(Error):
     """Unsupported media type"""
     MSGID = "HTTP-32471"
     CODE = 415
 
 
+@Registry.register
 class RangeNotSatisfiable(Error):
     """Range Not Satisfiable"""
     MSGID = "HTTP-25512"
     CODE = 416
 
 
+@Registry.register
 class ExpectationFailed(Error):
     """Expectation Failed"""
     MSGID = "HTTP-10663"
     CODE = 417
 
 
+@Registry.register
 class Teapot(Error):
     """I'm a teapot"""
     MSGID = "HTTP-30106"
     CODE = 418
 
 
+@Registry.register
 class MisdirectedRequest(Error):
     """Misdirected Request"""
     MSGID = "HTTP-24099"
     CODE = 421
 
 
+@Registry.register
 class UnprocessableEntity(Error):
     """Unprocessable Entity"""
     MSGID = "HTTP-30485"
     CODE = 422
 
 
+@Registry.register
 class Locked(Error):
     """Locked"""
     MSGID = "HTTP-28558"
     CODE = 423
 
 
+@Registry.register
 class FailedDependency(Error):
     """Failed Dependency"""
     MSGID = "HTTP-26893"
     CODE = 424
 
 
+@Registry.register
 class UpgradeRequired(Error):
     """Upgrade Required"""
     MSGID = "HTTP-03920"
     CODE = 426
 
 
+@Registry.register
 class PreconditionRequired(Error):
     """Precondition Required"""
     MSGID = "HTTP-20303"
     CODE = 428
 
 
+@Registry.register
 class TooManyRequests(Error):
     """Too Many Requests"""
     MSGID = "HTTP-10469"
     CODE = 429
 
 
+@Registry.register
 class RequestHeaderFieldsTooLarge(Error):
     """Request Header Fields Too Large"""
     MSGID = "HTTP-26409"
     CODE = 431
 
 
+@Registry.register
 class UnavailableForLegalReasons(Error):
     """Unavailable For Legal Reasons"""
     MSGID = "HTTP-19055"
     CODE = 451
 
 
+@Registry.register
 class InternalServerError(Error):
     """Internal Server Error"""
     MSGID = "HTTP-02752"
     CODE = 500
 
 
+@Registry.register
 class ProxyError(Error):
     """Proxy Error"""
     MSGID = "HTTP-09927"
     CODE = 502
 
 
+@Registry.register
 class ServiceUnavailable(Error):
     """Service Unavailable"""
     MSGID = "HTTP-26820"
     CODE = 503
 
 
+@Registry.register
 class GatewayTimeout(Error):
     """Gateway Time-out"""
     MSGID = "HTTP-04192"
     CODE = 504
 
 
+@Registry.register
 class HTTPVersionNotSupported(Error):
     """HTTP Version Not Supported"""
     MSGID = "HTTP-00083"
     CODE = 505
 
 
+@Registry.register
 class VariantAlsoNegotiates(Error):
     """Variant Also Negotiates"""
     MSGID = "HTTP-07221"
     CODE = 506
 
 
+@Registry.register
 class InsufficientStorage(Error):
     """Insufficient Storage"""
     MSGID = "HTTP-02356"
     CODE = 507
 
 
+@Registry.register
 class LoopDetected(Error):
     """Loop Detected"""
     MSGID = "HTTP-21955"
     CODE = 508
 
 
+@Registry.register
 class NotExtended(Error):
     """Not Extended"""
     MSGID = "HTTP-30281"
     CODE = 510
 
 
+@Registry.register
 class NetworkAuthenticationRequired(Error):
     """Network Authentication Required"""
     MSGID = "HTTP-30654"
