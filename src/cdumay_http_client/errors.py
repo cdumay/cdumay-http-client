@@ -8,6 +8,7 @@
 """
 from cdumay_error import Error, NotImplemented, ValidationError, NotFound, \
     ErrorSchema, Registry
+from marshmallow import EXCLUDE
 
 
 @Registry.register
@@ -415,8 +416,10 @@ def from_response(response, url):
 
         code = data.get('code', response.status_code)
         if code in HTTP_STATUS_CODES:
-            return HTTP_STATUS_CODES[code](**ErrorSchema().load(data))
+            return HTTP_STATUS_CODES[code](**ErrorSchema().load(
+                data, unknown=EXCLUDE
+            ))
         else:
-            return Error(**ErrorSchema().load(data))
+            return Error(**ErrorSchema().load(data, unknown=EXCLUDE))
     except Exception:
         return from_status(response.status_code, response.text, extra=extra)
