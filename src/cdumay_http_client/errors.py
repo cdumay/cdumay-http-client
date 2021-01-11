@@ -396,16 +396,16 @@ def from_status(status, message=None, extra=None):
         )
 
 
-def from_response(response, url):
+def from_response(response, **kwargs):
     """ Try to create an error from a HTTP response
 
     :param request.Response response: HTTP response
-    :param str url: URL attained
+    :param dict kwargs: additional context
     :return: An error
     :rtype: cdumay_http_client.errors.Error
     """
     extra = dict(
-        url=url, response=response.text, headers=dict(response.headers)
+        response=response.text, headers=dict(response.headers), **kwargs
     )
     # noinspection PyBroadException
     try:

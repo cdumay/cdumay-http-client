@@ -5,8 +5,9 @@
 .. codeauthor:: Cédric Dumay <cedric.dumay@gmail.com>
 
 """
-import time
 import logging
+import time
+
 import requests
 import requests.exceptions
 from cdumay_http_client import errors
@@ -49,10 +50,11 @@ class HttpClient(object):
         extra = dict(url=req_url, server=self.server, method=method)
 
         logger.debug("[{}] - {}".format(method, req_url))
+        payload = self._format_data(data)
         try:
             response = self._request_wrapper(
                 method=method, url=req_url, params=params,
-                data=self._format_data(data), auth=self.auth,
+                data=payload, auth=self.auth,
                 headers=req_headers, stream=stream,
                 timeout=timeout or self.timeout, verify=self.ssl_verify,
                 **kwargs
@@ -80,7 +82,7 @@ class HttpClient(object):
             )
         )
         if response.status_code >= 300:
-            raise errors.from_response(response, req_url)
+            raise errors.from_response(response, payload=payload, **extra)
 
         if parse_output is True:
             return self._parse_response(response)
