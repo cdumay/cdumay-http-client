@@ -56,6 +56,10 @@ class HttpClient(object):
         if response is None:
             raise errors.MisdirectedRequest(extra=extra)
 
+        extra.setdefault(
+            "request_id", response.headers.get('x-request-id', None)
+        )
+
         content = getattr(response, 'content', "")
         logger.info(
             f"[{method}] - {url} - {response.status_code}: {len(content)} - "
@@ -94,7 +98,7 @@ class HttpClient(object):
         last_error = None
 
         for req_try in range(1, self.retry_number + 1):
-            logger.info(f"[{method}] - {req_url} (try: {req_try})")
+            logger.debug(f"[{method}] - {req_url} (try: {req_try})")
             try:
                 return self._do_request(
                     url=req_url, method=method, headers=req_headers,
