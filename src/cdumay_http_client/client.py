@@ -20,16 +20,16 @@ logger = logging.getLogger(__name__)
 class HttpClient(object):
     """HttpClient"""
 
-    def __init__(self, server, timeout=10, headers=None, username=None,
-                 password=None, ssl_verify=True, retry_number=10,
-                 retry_delay=30):
+    def __init__(self, server, timeout=None, headers=None, username=None,
+                 password=None, ssl_verify=True, retry_number=None,
+                 retry_delay=None):
         self.server = server
-        self.timeout = timeout
+        self.timeout = timeout or 10
         self.headers = headers or dict()
         self.auth = (username, password) if username and password else None
         self.ssl_verify = ssl_verify
-        self.retry_number = retry_number
-        self.retry_delay = retry_delay
+        self.retry_number = retry_number or 10
+        self.retry_delay = retry_delay or 30
 
     def __repr__(self):
         return 'Connection: %s' % self.server
