@@ -10,6 +10,7 @@ import time
 
 import requests
 import requests.exceptions
+from cdumay_error import Error, InternalError
 from cdumay_http_client import errors
 
 logger = logging.getLogger(__name__)
@@ -18,17 +19,58 @@ logger = logging.getLogger(__name__)
 class HttpClient(object):
     """HttpClient"""
 
-    def __init__(
-            self, server, timeout=10, headers=None, username=None,
-            password=None, ssl_verify=True):
+    def __init__(self, server, timeout=10, headers=None, username=None,
+                 password=None, ssl_verify=True, retry_number=10,
+                 retry_delay=30):
         self.server = server
         self.timeout = timeout
         self.headers = headers or dict()
         self.auth = (username, password) if username and password else None
         self.ssl_verify = ssl_verify
+        self.retry_number = retry_number
+        self.retry_delay = retry_delay
 
     def __repr__(self):
         return 'Connection: %s' % self.server
+
+    def _do_request(self, url, method, headers, timeout=None, params=None,
+                    payload=None, stream=False, parse_output=True, **kwargs):
+        request_start_time = time.time()
+        extra = dict(url=url, server=self.server, method=method)
+        try:
+            response = self._request_wrapper(
+                method=method, url=url, params=params, data=payload,
+                auth=self.auth, headers=headers, stream=stream,
+                timeout=timeout or self.timeout, verify=self.ssl_verify,
+                **kwargs
+            )
+        except requests.exceptions.RequestException as e:
+            raise errors.InternalServerError(
+                message=getattr(e, 'message', "Internal Server Error"),
+                extra=extra
+            )
+        finally:
+            execution_time = time.time() - request_start_time
+
+        if response is None:
+            raise errors.MisdirectedRequest(extra=extra)
+
+        content = getattr(response, 'content', "")
+        logger.info(
+            f"[{method}] - {url} - {response.status_code}: {len(content)} - "
+            f"{round(execution_time, 3)}s",
+            extra=dict(
+                exec_time=execution_time, status_code=response.status_code,
+                content_lenght=len(content), **extra
+            )
+        )
+        if response.status_code >= 300:
+            raise errors.from_response(response, payload=payload, **extra)
+
+        if parse_output is True:
+            return self._parse_response(response)
+        else:
+            return response
 
     def _request_wrapper(self, **kwargs):
         return requests.request(**kwargs)
@@ -46,45 +88,26 @@ class HttpClient(object):
         req_url = ''.join([self.server.rstrip('/'), path])
         req_headers = headers or dict()
         req_headers.update(self.headers)
-        request_start_time = time.time()
-        extra = dict(url=req_url, server=self.server, method=method)
-
-        logger.debug("[{}] - {}".format(method, req_url))
         payload = self._format_data(data)
-        try:
-            response = self._request_wrapper(
-                method=method, url=req_url, params=params,
-                data=payload, auth=self.auth,
-                headers=req_headers, stream=stream,
-                timeout=timeout or self.timeout, verify=self.ssl_verify,
-                **kwargs
-            )
-        except requests.exceptions.RequestException as e:
-            raise errors.InternalServerError(
-                message=getattr(e, 'message', "Internal Server Error"),
-                extra=extra
-            )
-        finally:
-            execution_time = time.time() - request_start_time
+        last_error = None
 
-        if response is None:
-            raise errors.MisdirectedRequest(extra=extra)
-
-        content = getattr(response, 'content', "")
-        logger.info(
-            "[{}] - {} - {}: {} - {}s".format(
-                method, req_url, response.status_code,
-                len(content), round(execution_time, 3)
-            ),
-            extra=dict(
-                exec_time=execution_time, status_code=response.status_code,
-                content_lenght=len(content), **extra
-            )
-        )
-        if response.status_code >= 300:
-            raise errors.from_response(response, payload=payload, **extra)
-
-        if parse_output is True:
-            return self._parse_response(response)
+        for req_try in range(1, self.retry_number + 1):
+            logger.info(f"[{method}] - {req_url} (try: {req_try})")
+            try:
+                return self._do_request(
+                    url=req_url, method=method, headers=req_headers,
+                    timeout=timeout, params=params, payload=payload,
+                    stream=stream, parse_output=parse_output, **kwargs
+                )
+            except Error as err:
+                last_error = err
+                logger.error(f"{err}")
+                time.sleep(self.retry_delay)
+        if last_error:
+            raise last_error
         else:
-            return response
+            raise InternalError(
+                f"Unexcepected error, failed to perform request {method} on "
+                f"{req_url} after {self.retry_number} retries",
+                extra=dict(url=req_url, server=self.server, method=method)
+            )
