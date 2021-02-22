@@ -10,7 +10,8 @@ import time
 
 import requests
 import requests.exceptions
-from cdumay_error import Error, InternalError
+from cdumay_error import Error
+from cdumay_error.types import InternalError
 from cdumay_http_client import errors
 
 logger = logging.getLogger(__name__)
@@ -85,6 +86,7 @@ class HttpClient(object):
 
     def do_request(self, method, path, params=None, data=None, headers=None,
                    timeout=None, parse_output=True, stream=False, **kwargs):
+        """Perform request"""
         req_url = ''.join([self.server.rstrip('/'), path])
         req_headers = headers or dict()
         req_headers.update(self.headers)

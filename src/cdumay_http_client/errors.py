@@ -6,8 +6,9 @@
 
 
 """
-from cdumay_error import Error, NotImplemented, ValidationError, NotFound, \
-    ErrorSchema, Registry
+from cdumay_error import Error, ErrorSchema
+from cdumay_error.registry import Registry
+from cdumay_error.types import ValidationError, NotFound
 from marshmallow import EXCLUDE
 
 

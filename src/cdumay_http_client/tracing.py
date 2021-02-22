@@ -13,11 +13,13 @@ from cdumay_http_client.client import HttpClient
 
 
 class RequestSpan(Span):
+    """Opentracing span"""
     FORMAT = opentracing.Format.HTTP_HEADERS
     TAGS = ['url', 'method']
 
     @classmethod
     def name(cls, obj):
+        """Span name"""
         return "{method} {url}".format_map(obj)
 
     @classmethod
@@ -25,8 +27,8 @@ class RequestSpan(Span):
         """ Extract span context from the given object
 
         :param Any obj: Object to use as context
-        :return: a SpanContext instance extracted from the inner span object or None if no
-            such span context could be found.
+        :return: a SpanContext instance extracted from the inner span object or
+         None if no such span context could be found.
         """
         return opentracing.tracer.extract(cls.FORMAT, obj['headers'])
 
@@ -67,6 +69,7 @@ class RequestSpan(Span):
 
 
 class OpentracingHttpClient(HttpClient):
+    """Opentracing wrapper"""
     def _request_wrapper(self, **kwargs):
         with opentracing.tracer.start_span(
                 obj=kwargs, span_factory=RequestSpan) as span:
