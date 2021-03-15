@@ -89,13 +89,15 @@ class HttpClient(object):
         return response.text
 
     def do_request(self, method, path, params=None, data=None, headers=None,
-                   timeout=None, parse_output=True, stream=False, **kwargs):
+                   timeout=None, parse_output=True, stream=False,
+                   no_retry_on=None, **kwargs):
         """Perform request"""
         req_url = ''.join([self.server.rstrip('/'), path])
         req_headers = headers or dict()
         req_headers.update(self.headers)
         payload = self._format_data(data)
         last_error = None
+        no_retry_on = no_retry_on or list()
 
         for req_try in range(1, self.retry_number + 1):
             logger.debug(f"[{method}] - {req_url} (try: {req_try})")
@@ -108,6 +110,8 @@ class HttpClient(object):
             except Error as err:
                 last_error = err
                 logger.error(f"{err}")
+                if err.__class__ in no_retry_on:
+                    raise err
                 time.sleep(self.retry_delay)
         if last_error:
             raise last_error
