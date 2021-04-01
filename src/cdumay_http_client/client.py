@@ -100,7 +100,7 @@ class HttpClient(object):
         no_retry_on = no_retry_on or list()
 
         for req_try in range(1, self.retry_number + 1):
-            logger.debug(f"[{method}] - {req_url} (try: {req_try})")
+            logger.info(f"[{method}] - {req_url} (try: {req_try})")
             try:
                 return self._do_request(
                     url=req_url, method=method, headers=req_headers,
