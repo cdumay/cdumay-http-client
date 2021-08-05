@@ -25,6 +25,6 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     extras_require={
-        'opentracing': ['cdumay-opentracing>=0.1.8']
+        'async': ['httpx']
     }
 )
