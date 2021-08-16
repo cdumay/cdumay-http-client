@@ -109,15 +109,28 @@ class HttpClient(object):
                 )
             except Error as err:
                 last_error = err
-                logger.error(f"{err}")
+                logger.error(
+                    f"[{method}] - {req_url!r} (try: {req_try}) : {err} "
+                    f"({err.code})"
+                )
                 if err.__class__ in no_retry_on:
                     raise err
                 time.sleep(self.retry_delay)
         if last_error:
+            logger.error(
+                f"Failed to perform request {method!r} on {req_url!r} after "
+                f"{self.retry_number} retries : {last_error} "
+                f"({last_error.code})",
+                extra=dict(
+                    url=req_url, server=self.server, method=method,
+                    status_code=last_error.code,
+                    content_lenght=len(last_error.message),
+                )
+            )
             raise last_error
         else:
             raise InternalError(
-                f"Unexcepected error, failed to perform request {method} on "
-                f"{req_url} after {self.retry_number} retries",
+                f"Unexcepected error, failed to perform request {method!r} on "
+                f"{req_url!r} after {self.retry_number} retries",
                 extra=dict(url=req_url, server=self.server, method=method)
             )
