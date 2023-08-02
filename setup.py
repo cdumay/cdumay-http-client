@@ -25,6 +25,13 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     extras_require={
-        'async': ['httpx']
+        'async': ['httpx'],
+        "tests": [
+            "flake8",
+            "flake8-html",
+            "pytest",
+            "pytest-cov",
+            "pytest-html",
+        ]
     }
 )

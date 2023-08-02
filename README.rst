@@ -7,13 +7,24 @@
    :target: https://travis-ci.org/cdumay/cdumay-http-client
    :alt: Latest version
 
+.. image:: https://img.shields.io/badge/license-BSD3-blue.svg
+    :target: https://github.com/cdumay/http-client/blob/master/LICENSE
 
 .. image:: https://readthedocs.org/projects/cdumay-http-client/badge/?version=latest
    :target: http://cdumay-http-client.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-.. image:: https://img.shields.io/badge/license-BSD3-blue.svg
-    :target: https://github.com/cdumay/cdumay-http-client/blob/master/LICENSE
+.. image:: https://github.com/cdumay/cdumay-http-client/blob/reports/junit/tests-badge.svg?raw=true
+   :target: https://htmlpreview.github.io/?https://github.com/cdumay/cdumay-http-client/blob/reports/junit/report.html
+   :alt: Tests
+
+.. image:: https://github.com/cdumay/cdumay-http-client/blob/reports/flake8/flake8-badge.svg?raw=true
+   :target: https://htmlpreview.github.io/?https://github.com/cdumay/cdumay-http-client/blob/reports/flake8/index.html
+   :alt: Lint
+
+.. image:: https://github.com/cdumay/cdumay-http-client/blob/reports/coverage/coverage-badge.svg?raw=true
+   :target: https://htmlpreview.github.io/?https://github.com/cdumay/cdumay-http-client/blob/reports/coverage/html/index.html
+   :alt: Coverage badge
 
 cdumay-http-client
 ==================
